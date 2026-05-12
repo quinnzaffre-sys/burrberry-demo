@@ -4,10 +4,10 @@ let stream = null;
 
 const POSES = [
   {
-    poseUrl:  'images/jacket-model-3.jpg',
+    poseUrl:  'images/jacket-model-1.jpg',
     imgEl:    () => document.getElementById('gallery-img-back'),
     badgeEl:  () => document.getElementById('gemini-badge-back'),
-    label:    'back view',
+    label:    'front view, check side',
   },
   {
     poseUrl:  'images/jacket-model-4.jpg',
