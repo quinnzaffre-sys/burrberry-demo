@@ -1,5 +1,4 @@
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let apiKey = '';
 let capturedImageDataURL = null;
 let stream = null;
 
@@ -24,7 +23,6 @@ const POSES = [
 // ─── DOM REFS ─────────────────────────────────────────────────────────────────
 const modal     = document.getElementById('tryon-modal');
 const screens   = {
-  apikey:     document.getElementById('screen-apikey'),
   camera:     document.getElementById('screen-camera'),
   processing: document.getElementById('screen-processing'),
   error:      document.getElementById('screen-error'),
@@ -39,12 +37,8 @@ const toastEl    = document.getElementById('toast');
 function openModal() {
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
-  if (apiKey) {
-    showScreen('camera');
-    startCamera();
-  } else {
-    showScreen('apikey');
-  }
+  showScreen('camera');
+  startCamera();
 }
 
 document.getElementById('open-tryon').addEventListener('click', openModal);
@@ -71,21 +65,6 @@ function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.add('hidden'));
   screens[name].classList.remove('hidden');
 }
-
-// ─── API KEY ──────────────────────────────────────────────────────────────────
-document.getElementById('confirm-api-key').addEventListener('click', () => {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (!val) {
-    document.getElementById('api-key-input').style.borderColor = '#c00';
-    return;
-  }
-  apiKey = val;
-  showScreen('camera');
-  startCamera();
-});
-document.getElementById('api-key-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('confirm-api-key').click();
-});
 
 // ─── CAMERA ───────────────────────────────────────────────────────────────────
 async function startCamera() {
@@ -172,23 +151,11 @@ async function runTryOn() {
     ].join('\n');
 
     try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: prompt },
-                { inline_data: { mime_type: 'image/jpeg', data: userBase64 } },
-                { inline_data: { mime_type: 'image/jpeg', data: poseBase64 } },
-              ],
-            }],
-            generationConfig: { responseModalities: ['IMAGE', 'TEXT'] },
-          }),
-        }
-      );
+      const res = await fetch('/.netlify/functions/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userBase64, poseBase64, poseLabel: pose.label }),
+      });
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
