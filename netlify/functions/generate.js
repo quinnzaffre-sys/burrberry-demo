@@ -95,6 +95,7 @@ SCENE
 
 OUTPUT
 - One seamless, photorealistic image — professional Burberry campaign quality
+- The garment is the Burberry Check Cotton Wool Bomber Jacket in Sand Beige — preserve the diagonal check pattern, ribbed collar, zip, welt pockets, and ribbed cuffs exactly
 - ${poseLabel} pose
 - No compositing artefacts, no seams at collar or cuffs
 - Skin tone at all exposed areas matches Image 1 exactly
