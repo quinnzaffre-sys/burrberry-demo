@@ -2,21 +2,18 @@
 let capturedImageDataURL = null;
 let stream = null;
 
-// Model campaign images used as pose references for Gemini.
-// POSE 1: back view (confirmed UUID)
-// POSE 2: front 3/4 view — update UUID below once you have it from browser DevTools
 const POSES = [
   {
-    poseUrl:  'images/model-back.jpg',
+    poseUrl:  'images/jacket-model-1.jpg',
     imgEl:    () => document.getElementById('gallery-img-back'),
     badgeEl:  () => document.getElementById('gemini-badge-back'),
-    label:    'back view',
+    label:    'front view',
   },
   {
-    poseUrl:  'images/model-back.jpg', // ← swap UUID here for front view
+    poseUrl:  'images/jacket-model-3.jpg',
     imgEl:    () => document.getElementById('gallery-img-front'),
     badgeEl:  () => document.getElementById('gemini-badge-front'),
-    label:    'front view',
+    label:    'back view',
   },
 ];
 
@@ -137,15 +134,15 @@ async function runTryOn() {
       'You are a fashion virtual try-on AI for Burberry.',
       'You are given two images:',
       '  Image 1 — a photo of the user (face and body reference).',
-      `  Image 2 — a Burberry campaign photo of a model wearing the Knight Stamp Cotton Hoodie (${pose.label} pose, lighting, background, and product reference).`,
+      `  Image 2 — a Burberry campaign photo of a model wearing the Reversible Check Hooded Jacket (${pose.label} pose, lighting, background, and product reference).`,
       '',
       'Generate a single photorealistic image that replaces the model in Image 2 with the user from Image 1.',
       '',
       'Rules:',
       `• Adopt the EXACT ${pose.label} pose, camera angle, framing, lighting, and background from Image 2.`,
       '• Use the user\'s face, skin tone, hair, and body proportions from Image 1.',
-      '• The user wears the same Burberry Knight Stamp Cotton Hoodie (cornflower blue) exactly as the model in Image 2.',
-      '• Match the hoodie\'s fabric drape, shadows, and fit to the campaign image.',
+      '• The user wears the same Burberry Reversible Check Hooded Jacket exactly as the model in Image 2 — preserve the Burberry Check pattern, wave blue colourway, zip, hood, and fit.',
+      '• Match the jacket\'s fabric drape, shadows, and fit to the campaign image.',
       '• The result must look like a professional Burberry campaign photo with the user as the model.',
       '• Output only the image — no text, no borders, no watermarks.',
     ].join('\n');
