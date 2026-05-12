@@ -20,23 +20,20 @@ exports.handler = async (event) => {
   }
 
   const prompt = [
-    'You are a fashion virtual try-on AI for Burberry. Generate a completely NEW photorealistic image — do not modify or composite onto Image 2.',
+    'You are a fashion virtual try-on AI for Burberry.',
+    'You are given two images:',
+    '  Image 1 — a photo of the user (face and body reference).',
+    `  Image 2 — a Burberry campaign photo of a model wearing the Reversible Check Hooded Jacket (${poseLabel} pose, lighting, background, and product reference).`,
     '',
-    'You are given:',
-    '  Image 1 — the user (provides face, hair, skin tone, and body proportions).',
-    `  Image 2 — a Burberry campaign photo (provides the ${poseLabel} pose, camera angle, framing, lighting, and background to replicate, and the jacket as the product reference).`,
+    'Generate a single photorealistic image that replaces the model in Image 2 with the user from Image 1.',
     '',
-    'Output a single image showing:',
-    `  • The FULL BODY of the person from Image 1 — their face, hair, skin tone, and proportions — rendered entirely in the scene.`,
-    `  • That person posed EXACTLY as the model in Image 2: same ${poseLabel} pose, same camera angle, same framing, same lighting, same background.`,
-    '  • That person wearing the Burberry Reversible Check Hooded Jacket from Image 2 — preserve the check pattern, wave blue colourway, zip, hood, drape, and fit.',
-    '',
-    'Critical rules:',
-    "  • Do NOT perform a face swap. Do NOT paste the user's face onto the existing model body.",
-    '  • Generate the complete person from Image 1 as if they are standing in the campaign scene.',
-    '  • Remove the original model entirely — every part of them should be replaced by the user.',
-    '  • The result must look like a professional Burberry campaign photograph featuring the user.',
-    '  • Output only the final image — no text, no borders, no watermarks.',
+    'Rules:',
+    `• Adopt the EXACT ${poseLabel} pose, camera angle, framing, lighting, and background from Image 2.`,
+    "• Use the user's face, skin tone, hair, and body proportions from Image 1.",
+    '• The user wears the same Burberry Reversible Check Hooded Jacket exactly as the model in Image 2 — preserve the check pattern, wave blue colourway, zip, hood, and fit.',
+    "• Match the jacket's fabric drape, shadows, and fit to the campaign image.",
+    '• The result must look like a professional Burberry campaign photo with the user as the model.',
+    '• Output only the image — no text, no borders, no watermarks.',
   ].join('\n');
 
   const geminiRes = await fetch(
